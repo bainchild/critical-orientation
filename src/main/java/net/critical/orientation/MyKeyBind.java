@@ -1,30 +1,28 @@
 package net.critical.orientation;
 
-import net.fabricmc.fabric.api.client.keybinding.FabricKeyBinding;
-import net.fabricmc.fabric.api.client.keybinding.KeyBindingRegistry;
+import net.minecraft.client.option.KeyBinding;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.util.Identifier;
-import net.fabricmc.fabric.api.event.client.ClientTickCallback;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 public class MyKeyBind {
-    private static String categoryName = "Critical Orientation";
-    private static FabricKeyBinding keyBinding = FabricKeyBinding.Builder.create(
-            new Identifier("toggle", "orientation"),
-            InputUtil.Type.KEYSYM,
-            GLFW.GLFW_KEY_BACKSLASH,
-            categoryName
-    ).build();;
+    private static String categoryName = "category.criticalorientation";
+    // private static FabricKeyBinding keyBinding = new KeyBinding(
+    //         "key.criticalorientation.look",
+    //         InputUtil.Type.KEYSYM,
+    //         GLFW.GLFW_KEY_BACKSLASH,
+    //         categoryName
+    // ).build();;
 //    private boolean pressedLastTick = false;
 
     public MyKeyBind() {
 
-        KeyBindingRegistry.INSTANCE.addCategory(categoryName);
-        KeyBindingRegistry.INSTANCE.register(keyBinding);
+        KeyBinding keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.criticalorientation.look", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_BACKSLASH, categoryName));
 
-
-        ClientTickCallback.EVENT.register(e ->
+        ClientTickEvents.START_CLIENT_TICK.register(e ->
         {
                 if (keyBinding.wasPressed())
                 {
